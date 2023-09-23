@@ -16,8 +16,10 @@ public class ProjectSecurityConfig {
          *  Below is the custom security configurations
          */
 
-        http.authorizeHttpRequests((requests) -> requests.requestMatchers("/myAccount","/myBalance","/myLoans","/myCards").authenticated()
-                        .requestMatchers("/notices","/contact").permitAll())
+        http.authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/myAccount","/myBalance","/myLoans","/myCards").authenticated()
+                        .requestMatchers("/notices","/contact").permitAll()
+                )
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
         return http.build();

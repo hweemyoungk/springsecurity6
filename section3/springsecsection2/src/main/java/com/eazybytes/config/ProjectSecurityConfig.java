@@ -13,10 +13,16 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf((csrf) -> csrf.disable())
-                .authorizeHttpRequests((requests)->requests
-                        .requestMatchers("/myAccount","/myBalance","/myLoans","/myCards").authenticated()
-                        .requestMatchers("/notices","/contact","/register").permitAll())
+
+        /**
+         *  Below is the custom security configurations
+         */
+
+        http.authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
+                        .requestMatchers("/notices", "/contact", "/register").permitAll()
+                )
+                .csrf(csrfConfigurer -> csrfConfigurer.disable())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
@@ -34,9 +40,15 @@ public class ProjectSecurityConfig {
     }
 
     /*@Bean
+    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+        return jdbcUserDetailsManager;
+    }*/
+
+    /*@Bean
     public InMemoryUserDetailsManager userDetailsService() {
         //Approach 1 where we use withDefaultPasswordEncoder() method
-		//while creating the user details
+        //while creating the user details
         *//*UserDetails admin = User.withDefaultPasswordEncoder()
                 .username("admin")
                 .password("12345")
@@ -50,8 +62,8 @@ public class ProjectSecurityConfig {
         return new InMemoryUserDetailsManager(admin, user);*//*
 
         // Approach 2 where we use NoOpPasswordEncoder Bean
-		//while creating the user details
-        *//*UserDetails admin = User.withUsername("admin")
+        //while creating the user details
+        UserDetails admin = User.withUsername("admin")
                 .password("12345")
                 .authorities("admin")
                 .build();
@@ -59,7 +71,7 @@ public class ProjectSecurityConfig {
                 .password("12345")
                 .authorities("read")
                 .build();
-        return new InMemoryUserDetailsManager(admin, user);*//*
+        return new InMemoryUserDetailsManager(admin, user);
 
     }*/
 
